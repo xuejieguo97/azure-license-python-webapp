@@ -1,0 +1,17 @@
+<!doctype html>
+<head>
+    <title>Admin Portal</title>
+</head>
+<body>
+    <h1>Assign license{{ license.id }} to User</h1>
+    {% for user in users %}
+    <li>{{ user.email }}</li>
+    {% endfor %}
+    <form action="" method=post>
+        <label>Assign to:</label>
+        <input type=text name=user value="{{ request.form.user }}">
+        <input type=submit value="Create entry">
+    </form>
+    <br>
+    <a href="{{ url_for('index') }}">Back</a>
+</body>

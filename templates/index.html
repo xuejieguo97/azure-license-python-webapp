@@ -4,20 +4,39 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Microsoft Identity Python Web App</h1>
-    <h2>Welcome {{ user.get("name") }}!</h2>
+    <h1>Admin Portal</h1>
+    <h2>Welcome {{ user.firstname }}, </h2>
 
-    {% if config.get("ENDPOINT") %}
-      <li><a href='/graphcall'>Call Microsoft Graph API</a></li>
-    {% endif %}
-
-    {% if config.get("B2C_PROFILE_AUTHORITY") %}
-      <li><a href='{{_build_auth_code_flow(authority=config["B2C_PROFILE_AUTHORITY"])["auth_uri"]}}'>Edit Profile</a></li>
-    {% endif %}
-
-    <li><a href="/logout">Logout</a></li>
+    {% if users and user.is_admin %}
     <hr>
-    <footer style="text-align: right">Powered by MSAL Python {{ version }}</footer>
+    <h3>Current Active User:</h3>
+    <p>Click the link blow to delete the user.</p>
+    <ul>
+        {% for uu in users %}
+            <li><a href="{{ url_for('delete_user', user_email = uu.email) }}">{{ uu.email }}</a></li>
+        {% endfor %}
+    </ul>
+    <br>
+    {% endif %}
+
+    {% if licenses %}
+    <hr>
+    <h3>License:</h3>
+    <ul>
+        {% for license in licenses %}
+            <li><a href="{{ url_for('license',license_id =license.id) }}">{{ license.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    {% if user.is_admin %}
+    <li><a href='/license_add'>Click here to add new license</a></li>
+    {% endif %}
+
+  <li><a href="/logout">Logout</a></li>
+  <hr>
+  <footer style="text-align: right">Powered by MSAL Python {{ version }}</footer>
 </body>
 </html>
 
